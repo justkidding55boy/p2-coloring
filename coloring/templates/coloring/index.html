@@ -8,6 +8,9 @@
 
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'coloring/vendors/hammer/hammer.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'coloring/vendors/hammer/jquery.hammer.js' %}"></script>
+  
 
 	<style type="text/css">
 		#color-palette {
@@ -58,15 +61,82 @@
 			// your rectangle gradient interaction goes in this function
 			// you may also add code outside of the function (e.g., global variables)
 			function myGradientInteraction(){
-				var tool = new paper.Tool();
+        
+          //rotate
+       var $canvasElm = document.getElementById('myCanvas');
+       var $canvasObj = new Hammer($canvasElm);
+       $jqCanvasElm = $($canvasElm);
+       $canvasObj.get("swipe").set({ enable: true});
+       $canvasObj.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
+       var $distance, $angle, $positionx, $positiony, $positionx2, $positiony2;
+        
+        
+       $canvasObj.on('swipe', function(element) {
+         
+         $distance = element.distance;
+         $angle = element.angle;
+         $positionx = element.changedPointers[0].screenX-element.deltaX;
+         $positiony = element.changedPointers[0].screenY-element.deltaY;
+         
+         
+         $positionx2 = element.changedPointers[1].screenX-element.deltaX;
+         $positiony2 = element.changedPointers[1].screenY-element.deltaY;
+//          console.log($positionx);
+
+       });
+        
+
+        
+        
+				var tool = new paper.Tool();
+                // Use jQuery to get a reference to the canvas object
+//         let canvas = $('#myCanvas')[0];
+        // Set up the canvas for drawing
+//         paper.setup($('#myCanvas')[0]);
+
+        var center = paper.view.center;
+        var bottomRight = paper.view.center;
+        
+        var path = new paper.Path.Rectangle({
+          point: [250, 280],
+          size: [220, 150],
+          strokeColor: 'black',
+          fillColor: 'red'
+        });
+
+        // Draw the path now
+        paper.view.draw();
 				tool.onMouseDown = function (event) {
 
+//           	var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
+// 				    if (hit) {
+// 				        hit.item.fillColor = cp.history[cp.history.length - 1];
+// 				    }
+          
+//             path.fillColor = cp.history[cp.history.length - 1];
+          
+
+        var destination, origin;
+          
+        tool.onMouseUp = function (event) {
+            origin = event.downPoint;
+            destination = event.point;
+					  path.fillColor = {
+            gradient: {
+              stops: [cp.history[cp.history.length - 1], cp.history[cp.history.length - 2]]
+            },
+//               origin: [$positionx - 250, $positiony - 280],
+//             origin: new paper.Point([250, 250]),
+            origin: origin,
+//             destination: new paper.Point($positionx2, $positiony2)
+            destination: destination
+          }
 				}
 
-				tool.onMouseUp = function (event) {
-					
 				}
+
+
 			}
 
 			// your custom interaction goes here!
