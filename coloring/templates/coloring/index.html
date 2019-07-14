@@ -10,37 +10,230 @@
 	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'coloring/vendors/hammer/hammer.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'coloring/vendors/hammer/jquery.hammer.js' %}"></script>
+  <script type="text/javascript" src="{% static 'coloring/javascript/index.js' %}"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'coloring/css/index.css' %}" />
+  <style>
   
+            .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            -webkit-animation: fadeInDown 1s; /* Safari, Chrome and Opera > 12.1 */
+            animation: fadeInDown 1s;
+            }
+            /* Modal Content */
+            .modal-content-my {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border: 3px solid #888;
+            width: 80%;
+            max-width: 800px;
+            }
+            .modal-inner-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            }
 
-	<style type="text/css">
-		#color-palette {
-			width: 300px;
-			background-color: #f1f1f1;
-			display: flex;
-			flex-wrap: wrap;
-			position: absolute;
-			top: 0;
-		}
 
-		.swatch {
-			width: 24px;
-			height: 24px;
-			-moz-border-radius: 12px;
-			-webkit-border-radius: 12px;
-			border-radius: 12px;
-			margin: 3px;
-		}
+            .modal-image {
+            flex-basis: 30%;
+            }
+            .modal-image img {
+            width: 100%;
+            }
+            .close-button {
+            margin-top: 20px;
+            text-align: center;
+            }
+            .closebtn {
+            transition: all .3s ease;
+            color: blue;
+            padding: 5px 20px;
+            }
+            .closebtn:hover,
+            .closebtn:focus {
+            color: #555;
+            text-decoration: none;
+            cursor: pointer;
+            }
+            #myBtn {
+            width: 100%;
+            max-width: 480px;
+            height:270px;
+            background: white;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            }
+            #myBtn2 {
+            cursor: pointer;
+            border-style:hidden;
+            -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+            animation: fadein 1s;
+            }
+            .closetop {
+            color: #aaa;
+            float: right;
+            font-size: 42px;
+            font-weight: 500;
+            transition: all .3s ease;
+            position: absolute;
+            top: 0;
+            right: 10px;
+            -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+            animation: fadein 1s;
+            }
+            .closetop:hover,
+            .closetop:focus {
+            color: red;
+            text-decoration: none;
+            cursor: pointer;
+            }
+            #my-image {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            }
+            #my-image img {
+            width: 100%;
+            height:270px;
+            max-height:270px;
+            transition: all .3s ease;
+            -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+            animation: fadein 1s;
+            }
+            .add-border {
+            border: 5px solid blue;
+            }
+            @keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+            }
 
-		#myCanvas {
-			padding-left: 0;
-		    padding-right: 0;
-		    margin-left: auto;
-		    margin-right: auto;
-		    display: block;
-		}
-	</style>
+            @keyframes fadeInDown {
+            from {
+            opacity: 1;
+            transform: translate3d(0, -20%, 0);
+            }
+            to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+            }
+            }
 
-	<script type="text/javascript" canvas="canvas">
+            ul {
+              list-style-type: none;
+              margin: 0;
+              padding: 0;
+              overflow: hidden;
+              background-color: #333;
+            }
+
+            li {
+              float: left;
+            }
+
+            li a {
+              display: block;
+              color: white;
+              text-align: center;
+              padding: 14px 16px;
+              text-decoration: none;
+            }
+
+            li a:hover {
+              background-color: #111;
+            }
+
+
+            .container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+    
+  </style>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+  
+    
+</head>
+<script type="text/javascript" canvas="canvas">
 		window.onload = function() {
 			var canvas = document.getElementById('myCanvas');
 
@@ -48,7 +241,9 @@
 			var mandala = {
 				item: null,
 				lastClicked: null,
-				filePath: '/static/coloring/images/mandala-freepik.svg'
+// 				filePath: '/static/coloring/images/mandala-freepik.svg'
+// 				filePath: '/static/coloring/images/triangles.svg'
+        
 			};	
 
 			// color palette
@@ -61,83 +256,35 @@
 			// your rectangle gradient interaction goes in this function
 			// you may also add code outside of the function (e.g., global variables)
 			function myGradientInteraction(){
-        
-          //rotate
-       var $canvasElm = document.getElementById('myCanvas');
-       var $canvasObj = new Hammer($canvasElm);
-       $jqCanvasElm = $($canvasElm);
-       $canvasObj.get("swipe").set({ enable: true});
-       $canvasObj.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
-       var $distance, $angle, $positionx, $positiony, $positionx2, $positiony2;
+        console.log("working");
+//         var path;
         
-        
-       $canvasObj.on('swipe', function(element) {
-         
-         $distance = element.distance;
-         $angle = element.angle;
-         $positionx = element.changedPointers[0].screenX-element.deltaX;
-         $positiony = element.changedPointers[0].screenY-element.deltaY;
-         
-         
-         $positionx2 = element.changedPointers[1].screenX-element.deltaX;
-         $positiony2 = element.changedPointers[1].screenY-element.deltaY;
-//          console.log($positionx);
-
-       });
-        
-
-        
-        
-				var tool = new paper.Tool();
-                // Use jQuery to get a reference to the canvas object
-//         let canvas = $('#myCanvas')[0];
-        // Set up the canvas for drawing
-//         paper.setup($('#myCanvas')[0]);
-
-        var center = paper.view.center;
-        var bottomRight = paper.view.center;
-        
-        var path = new paper.Path.Rectangle({
-          point: [250, 280],
-          size: [220, 150],
-          strokeColor: 'black',
-          fillColor: 'red'
-        });
-
-        // Draw the path now
-        paper.view.draw();
-				tool.onMouseDown = function (event) {
-
-//           	var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
-// 				    if (hit) {
-// 				        hit.item.fillColor = cp.history[cp.history.length - 1];
-// 				    }
+//         function onMouseDown(event) {
+//           if (path) {
+//             path.selected = false;
+//           }
           
-//             path.fillColor = cp.history[cp.history.length - 1];
-          
+//           path = new paper.Path({
+//             segments: [event.point],
+//             strokeColor: 'black',
+//             fullySelected: true
+//           });
+//         }
 
-        var destination, origin;
-          
-        tool.onMouseUp = function (event) {
-            origin = event.downPoint;
-            destination = event.point;
-					  path.fillColor = {
-            gradient: {
-              stops: [cp.history[cp.history.length - 1], cp.history[cp.history.length - 2]]
-            },
-//               origin: [$positionx - 250, $positiony - 280],
-//             origin: new paper.Point([250, 250]),
-            origin: origin,
-//             destination: new paper.Point($positionx2, $positiony2)
-            destination: destination
-          }
-				}
+//         function onMouseDrag(event) {
+//           path.add(event.point);
+//         }
+        
+//         function onMouseUp(event) {
+//           path.fullySelected = true;
+//         }
 
-				}
+		}
+      
 
+      
 
-			}
 
 			// your custom interaction goes here!
 			// you may replace everything
@@ -167,6 +314,7 @@
 					cp.$container.append($swatch);
 				}
 			}
+      
 
 			// loads a set of colors from a json to create a color palette
 			function getColorsCreatePalette(){
@@ -177,6 +325,7 @@
 						cp.options.push(colors[keys[i]][500]);
 					}
 					createColorPalette(cp.options);
+  
 				});
 			}
 
@@ -203,16 +352,184 @@
 			// http://<your url>:8000/coloring/
 			var url = window.location.href;
 			if (url.indexOf("gradient") > -1) {
+//         console.log("gradient");
 				init(false);
 			} else {
 				init(true);
 			}
 		}
-	</script>
-</head>
+  </script>
+  
 <body>	
+	<div class="top">
+		<div class="btn btn-primary"><p>New Image</p></div>
+		<div class="btn btn-primary"><p>Save</p></div>
+		<div class="btn btn-primary"><p>Gallary</p></div>
+	</div>
+  
+  
+          <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content-my">
 
-	<canvas id="myCanvas" width="750px" height="750px"></canvas>
-	<div id="color-palette"></div>
+              <ul class="menu">
+                <li><a href="#completed" class="menu-btn">Completed</a></li>
+                <li><a href="#inprogress" class="menu-btn">In Progress</a></li>
+                <li><a href="#invite-friend" class="menu-btn">Invite Friend</a></li>
+
+              </ul>
+
+              <div class="menu-content completed">
+              <div class="menu-content modal-inner-content completed">
+                  <div class="modal-image"><img src="/static/coloring/images/image.jpg" alt="">
+                  64 Likes
+                  <br>
+                  25 Completed
+                  </div>
+                  <div class="modal-image"><img src="/static/coloring/images/image1.jpg" alt="">
+                  42 Likes
+                  <br>
+                  13 Completed
+                  </div>
+                  <div class="modal-image"><img src="/static/coloring/images/image3.jpg" alt="">
+                  10 Likes
+                  <br>
+                  13 Completed
+                  </div>
+
+              </div>
+              <div class="close-button">
+                  <span class="closebtn uploadBtn">Upload</span>
+              </div>
+            </div>
+
+              <div class="menu-content inprogress">
+              <div class="menu-content modal-inner-content inprogress">
+                  <div class="modal-image"><img src="/static/coloring/images/image.jpg" alt=""></div>
+                  <div class="modal-image"><img src="/static/coloring/images/image2.jpg" alt=""></div>
+
+              </div>
+              <div class="close-button">
+                  <span class="closebtn uploadBtn">Upload</span>
+              </div>
+            </div>
+
+              <div class="menu-content invite-friend">
+                <h2>Send Invitation to : </h2>
+                <label class="container">Jane Adams
+                  <input type="checkbox" checked="checked">
+                  <span class="checkmark"></span>
+                </label>
+
+                <label class="container"> Kenneth Wu
+                  <input type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+
+                <label class="container"> Eidi Kudo
+                  <input type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+
+                <label class="container">Timothy Lee
+                  <input type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+        </div>
+
+	<canvas id="myCanvas"></canvas>
+  <img class="color-main" src=" /static/coloring/images/colorMain.png">
+<!--   hover color-main and appear -->
+ 	<div id="color-palette"></div>
+
+  <img class="pencil" src="/static/coloring/images/pencil.png">
+  <img class="highlighter" src="/static/coloring/images/highlighter.png">
+  <img class="eraser" src="/static/coloring/images/eraser.jpg">
+  
+  <div class="side-bar">
+    <div class="add-btn">
+         <div id="myBtn">
+            <div id="my-image">
+                <img src="" alt="">
+                <span class="closetop">&times;</span>
+            </div>
+            <div id="myBtn2" class="texttop">+ Inspire Me</div>
+        </div>
+    </div>
+    <div class="add-btn2">
+      + Inspire Me
+    </div>
+    <div class="add-btn2">
+      + Inspire Me
+    </div>
+  </div>
+  
+          <script>
+        var $content = $('.menu-content');
+
+            function showContent(type) {
+              $content.hide().filter('.' + type).show();
+            }
+
+            $('.menu').on('click', '.menu-btn', function(e) {
+              showContent(e.currentTarget.hash.slice(1));
+              e.preventDefault();
+            });
+
+            // show 'about' content only on page load (if you want)
+            showContent('about');
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn2");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("closebtn")[0];
+
+            // When the user clicks the button, open the modal
+            btn.onclick = function() {
+              modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+              modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            }
+
+            var $content = $('.menu-content');
+
+
+        </script>
+        <script>
+            $(document).ready(function () {
+            $('.modal-image img').click(function () {
+                $('.modal-image img').removeClass("add-border");
+                $(this).addClass("add-border");
+                var imgSrc = $(this).attr('src');
+                $('.closebtn').click(function () {
+                    $('#my-image').css('display', 'block');
+                    $('#my-image img').attr('src', imgSrc);
+                    $('.texttop').css('display', 'none');
+                });
+                $('.closetop').click(function () {
+                    $('#my-image').css('display', 'none');
+                    $('#my-image img').attr('src', '');
+                    $('.texttop').css('display', 'block');
+                });
+            });
+            });
+  </script>
+
 </body>
 </html>
